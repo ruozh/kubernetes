@@ -2405,6 +2405,10 @@ message NodeStatus {
   // Status of the config assigned to the node via the dynamic Kubelet config feature.
   // +optional
   optional NodeConfigStatus config = 11;
+
+  // Attestation Status
+  // +optional
+  optional string attestation = 12;
 }
 
 // NodeSystemInfo is a set of ids/uuids to uniquely identify the node.

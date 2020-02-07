@@ -4440,6 +4440,9 @@ type NodeStatus struct {
 	// Status of the config assigned to the node via the dynamic Kubelet config feature.
 	// +optional
 	Config *NodeConfigStatus `json:"config,omitempty" protobuf:"bytes,11,opt,name=config"`
+	// Attestation Status
+	// +optional
+	Attestation string `json:"attestation,omitempty" protobuf:"bytes,12,opt,name=attestation"`
 }
 
 type UniqueVolumeName string

@@ -3877,6 +3877,9 @@ type NodeStatus struct {
 	// Status of the config assigned to the node via the dynamic Kubelet config feature.
 	// +optional
 	Config *NodeConfigStatus
+	// Attestation Status
+	// +optional
+	Attestation string
 }
 
 // UniqueVolumeName defines the name of attached volume
