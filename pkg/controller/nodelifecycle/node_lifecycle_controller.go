@@ -803,8 +803,6 @@ func (nc *Controller) monitorNodeHealth() error {
 
 	zoneToNodeConditions := map[string][]*v1.NodeCondition{}
 	for i := range nodes {
-		// Verify node status is successfully updated by kubelet and can be retrieved here
-		klog.Infof("MSK8S: Node attestation state: %v", nodes[i].Status.Attestation)
 		var gracePeriod time.Duration
 		var observedReadyCondition v1.NodeCondition
 		var currentReadyCondition *v1.NodeCondition

@@ -19,7 +19,6 @@ package kubelet
 import (
 	"context"
 	"fmt"
-	"math/rand"
 	"net"
 	goruntime "runtime"
 	"sort"
@@ -443,17 +442,6 @@ func (kl *Kubelet) tryUpdateNodeStatus(tryNumber int) error {
 	}
 
 	kl.setNodeStatus(node)
-
-	// This should ideally change through node status setters.
-	// See pkg/kubelet/nodestatus/setters.go
-	// A change in attestation status should trigger an update to api server.
-	if r := rand.Intn(10) ; r < 5 {
-		node.Status.Attestation = "illegal"
-	} else {
-		node.Status.Attestation = "legal"
-	}
-	klog.Infof("MSK8S: Previous node attestation status: %v", originalNode.Status.Attestation)
-	klog.Infof("MSK8S: Current node attestation status: %v", node.Status.Attestation)
 
 	now := kl.clock.Now()
 	if now.Before(kl.lastStatusReportTime.Add(kl.nodeStatusReportFrequency)) {

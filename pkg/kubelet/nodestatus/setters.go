@@ -18,6 +18,7 @@ package nodestatus
 
 import (
 	"fmt"
+	"io/ioutil"
 	"math"
 	"net"
 	goruntime "runtime"
@@ -513,6 +514,27 @@ func ReadyCondition(
 				Status:            v1.ConditionFalse,
 				Reason:            "KubeletNotReady",
 				Message:           aggregatedErr.Error(),
+				LastHeartbeatTime: currentTime,
+			}
+		}
+
+		// Hack: This is just a proof of concept
+		// We shouldn't reuse NodeReady type.
+		// Instead, we should consider adding another NodeConditionType like
+		// NodeAttestationPassed, adding it to pod daemon set and
+		// choosing a small tolerationSeconds
+		data, e := ioutil.ReadFile("/tmp/attestationFlag")
+		if e != nil {
+			klog.Errorf("MSK8S: Failed to read attestation status.")
+		}
+		flag := string(data)
+		klog.Infof("MSK8S: Attestation flag: %v", flag)
+		if strings.Contains(flag, "false") {
+			newNodeReadyCondition = v1.NodeCondition{
+				Type: v1.NodeReady,
+				Status: v1.ConditionFalse,
+				Reason: "Attestation Failed",
+				Message: "Node in illegal status",
 				LastHeartbeatTime: currentTime,
 			}
 		}
